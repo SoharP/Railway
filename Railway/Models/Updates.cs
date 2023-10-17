@@ -2,7 +2,7 @@
 {
     public class Updates
     {
-        public string Updates_ID{ get; set; }
+        public string UpdatesID{ get; set; }
         public int Time_Of_Arrival { get; set; }
         public string Delay { get; set; }
         public string Time_Of_Departutre { get; set; }

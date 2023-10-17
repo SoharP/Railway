@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Railway.Areas.Identity.Data;
+using Railway.Models;
 
 namespace Railway.Areas.Identity.Data;
 
@@ -19,4 +20,12 @@ public class RailwayContext : IdentityDbContext<RailwayUser>
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
     }
+
+    public DbSet<Railway.Models.Routes> Routes { get; set; } = default!;
+
+    public DbSet<Railway.Models.Station> Station { get; set; } = default!;
+
+    public DbSet<Railway.Models.Login> Login { get; set; } = default!;
+
+    public DbSet<Railway.Models.Updates> Updates { get; set; } = default!;
 }

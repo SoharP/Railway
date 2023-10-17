@@ -9,5 +9,5 @@
         public string MaxCapacity { get; set; }
 
         public ICollection<Station> Stations { get; set; }
-}
+    }
 }
