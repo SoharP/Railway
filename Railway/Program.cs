@@ -6,7 +6,7 @@ var connectionString = builder.Configuration.GetConnectionString("RailwayContext
 
 builder.Services.AddDbContext<RailwayContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<RailwayUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<RailwayContext>();
+builder.Services.AddDefaultIdentity<RailwayUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<RailwayContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -32,4 +32,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
 app.Run();
