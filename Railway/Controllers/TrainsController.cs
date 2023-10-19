@@ -11,103 +11,102 @@ using Railway.Models;
 
 namespace Railway.Controllers
 {
-    public class RoutesController : Controller
+    public class TrainsController : Controller
     {
         private readonly RailwayContext _context;
 
-        public RoutesController(RailwayContext context)
+        public TrainsController(RailwayContext context)
         {
             _context = context;
         }
 
-        // GET: Routes
+        // GET: Trains
         [Authorize]
         public async Task<IActionResult> Index()
         {
-              return _context.Routes != null ? 
-                          View(await _context.Routes.ToListAsync()) :
-                          Problem("Entity set 'RailwayContext.Routes'  is null.");
+              return _context.Train != null ? 
+                          View(await _context.Train.ToListAsync()) :
+                          Problem("Entity set 'RailwayContext.Train'  is null.");
         }
 
-        // GET: Routes/Details/5
-        
+        // GET: Trains/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Routes == null)
+            if (id == null || _context.Train == null)
             {
                 return NotFound();
             }
 
-            var routes = await _context.Routes
-                .FirstOrDefaultAsync(m => m.RoutesID == id);
-            if (routes == null)
+            var train = await _context.Train
+                .FirstOrDefaultAsync(m => m.TrainID == id);
+            if (train == null)
             {
                 return NotFound();
             }
 
-            return View(routes);
+            return View(train);
         }
 
-        // GET: Routes/Create
+        // GET: Trains/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Routes/Create
+        // POST: Trains/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RoutesID,Price,TrainLine,LineStatus")] Routes routes)
+        public async Task<IActionResult> Create([Bind("TrainID,Type,NumberofCarriages,MaxSpeed,MaxCapacity")] Train train)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _context.Add(routes);
+                _context.Add(train);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(routes);
+            return View(train);
         }
 
-        // GET: Routes/Edit/5
+        // GET: Trains/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Routes == null)
+            if (id == null || _context.Train == null)
             {
                 return NotFound();
             }
 
-            var routes = await _context.Routes.FindAsync(id);
-            if (routes == null)
+            var train = await _context.Train.FindAsync(id);
+            if (train == null)
             {
                 return NotFound();
             }
-            return View(routes);
+            return View(train);
         }
 
-        // POST: Routes/Edit/5
+        // POST: Trains/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RoutesID,Price,TrainLine,LineStatus")] Routes routes)
+        public async Task<IActionResult> Edit(int id, [Bind("TrainID,Type,NumberofCarriages,MaxSpeed,MaxCapacity")] Train train)
         {
-            if (id != routes.RoutesID)
+            if (id != train.TrainID)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(routes);
+                    _context.Update(train);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoutesExists(routes.RoutesID))
+                    if (!TrainExists(train.TrainID))
                     {
                         return NotFound();
                     }
@@ -118,49 +117,49 @@ namespace Railway.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(routes);
+            return View(train);
         }
 
-        // GET: Routes/Delete/5
+        // GET: Trains/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Routes == null)
+            if (id == null || _context.Train == null)
             {
                 return NotFound();
             }
 
-            var routes = await _context.Routes
-                .FirstOrDefaultAsync(m => m.RoutesID == id);
-            if (routes == null)
+            var train = await _context.Train
+                .FirstOrDefaultAsync(m => m.TrainID == id);
+            if (train == null)
             {
                 return NotFound();
             }
 
-            return View(routes);
+            return View(train);
         }
 
-        // POST: Routes/Delete/5
+        // POST: Trains/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Routes == null)
+            if (_context.Train == null)
             {
-                return Problem("Entity set 'RailwayContext.Routes'  is null.");
+                return Problem("Entity set 'RailwayContext.Train'  is null.");
             }
-            var routes = await _context.Routes.FindAsync(id);
-            if (routes != null)
+            var train = await _context.Train.FindAsync(id);
+            if (train != null)
             {
-                _context.Routes.Remove(routes);
+                _context.Train.Remove(train);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RoutesExists(int id)
+        private bool TrainExists(int id)
         {
-          return (_context.Routes?.Any(e => e.RoutesID == id)).GetValueOrDefault();
+          return (_context.Train?.Any(e => e.TrainID == id)).GetValueOrDefault();
         }
     }
 }

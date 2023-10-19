@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace Railway.Controllers
         }
 
         // GET: Stations
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var railwayContext = _context.Station.Include(s => s.Train);
@@ -27,6 +29,7 @@ namespace Railway.Controllers
         }
 
         // GET: Stations/Details/5
+        
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Station == null)
@@ -59,7 +62,7 @@ namespace Railway.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("StationID,PlatformNo,TimeOfArrival,TimeOfDeparture,TrainID")] Station station)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(station);
                 await _context.SaveChangesAsync();
@@ -98,7 +101,7 @@ namespace Railway.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {

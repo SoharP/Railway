@@ -28,4 +28,6 @@ public class RailwayContext : IdentityDbContext<RailwayUser>
     public DbSet<Railway.Models.Login> Login { get; set; } = default!;
 
     public DbSet<Railway.Models.Updates> Updates { get; set; } = default!;
+
+    public DbSet<Railway.Models.Train> Train { get; set; } = default!;
 }

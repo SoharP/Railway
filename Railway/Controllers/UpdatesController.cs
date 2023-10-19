@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace Railway.Controllers
         }
 
         // GET: Updates
+        [Authorize]
         public async Task<IActionResult> Index()
         {
               return _context.Updates != null ? 
@@ -28,6 +30,7 @@ namespace Railway.Controllers
         }
 
         // GET: Updates/Details/5
+       
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Updates == null)
@@ -58,7 +61,7 @@ namespace Railway.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UpdatesID,Time_Of_Arrival,Delay,Time_Of_Departutre,Platform_No,Login_ID,Station_Name")] Updates updates)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(updates);
                 await _context.SaveChangesAsync();
@@ -95,7 +98,7 @@ namespace Railway.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
