@@ -13,10 +13,10 @@ namespace Railway.Models
         [DisplayName("Number Of Carriages")]
         public string NumberofCarriages { get; set; }
 
-        [DisplayName("Max Speed")]
+        [DisplayName("Max Speed(km/h)")]
         public string MaxSpeed { get; set; }
 
-        [DisplayName("Max Capacity")]
+        [DisplayName("Max Capacity(People)")]
         public string MaxCapacity { get; set; }
 
         [DataType(DataType.Date)]
