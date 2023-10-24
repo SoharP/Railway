@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Railway.Models
 {
@@ -17,6 +18,9 @@ namespace Railway.Models
 
         [DisplayName("Max Capacity")]
         public string MaxCapacity { get; set; }
+
+        [DataType(DataType.Date)]
+        public string DOA { get; set; }
 
         public ICollection<Station> Stations { get; set; }
     }

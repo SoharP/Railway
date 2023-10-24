@@ -24,6 +24,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.MaxCapacity)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DOA)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -41,6 +44,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MaxCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DOA)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TrainID">Edit</a> |

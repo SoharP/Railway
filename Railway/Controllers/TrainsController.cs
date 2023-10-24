@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +20,6 @@ namespace Railway.Controllers
         }
 
         // GET: Trains
-        [Authorize]
         public async Task<IActionResult> Index()
         {
               return _context.Train != null ? 
@@ -58,9 +56,9 @@ namespace Railway.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrainID,Type,NumberofCarriages,MaxSpeed,MaxCapacity")] Train train)
+        public async Task<IActionResult> Create([Bind("TrainID,Type,NumberofCarriages,MaxSpeed,MaxCapacity,DOA")] Train train)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(train);
                 await _context.SaveChangesAsync();
@@ -90,14 +88,14 @@ namespace Railway.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TrainID,Type,NumberofCarriages,MaxSpeed,MaxCapacity")] Train train)
+        public async Task<IActionResult> Edit(int id, [Bind("TrainID,Type,NumberofCarriages,MaxSpeed,MaxCapacity,DOA")] Train train)
         {
             if (id != train.TrainID)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {

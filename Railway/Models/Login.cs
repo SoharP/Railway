@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Railway.Models
 {
@@ -10,6 +11,9 @@ namespace Railway.Models
 
         [DisplayName("Phone Number")]
         public string Phone_Number { get; set; }
+
+        [DataType(DataType.Date)]
+        public string DOB { get; set; }
 
         public int Email { get; set; }
 
