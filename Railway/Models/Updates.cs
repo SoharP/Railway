@@ -10,7 +10,7 @@ namespace Railway.Models
         public int Time_Of_Arrival { get; set; }
         public string Delay { get; set; }
 
-        [DisplayName("Time Of Depaarture")]
+        [DisplayName("Time Of Departure")]
         public string Time_Of_Departutre { get; set; }
 
         [DisplayName("Platform Number")]
