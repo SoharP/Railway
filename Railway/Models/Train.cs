@@ -19,6 +19,8 @@ namespace Railway.Models
         [DisplayName("Max Capacity(People)")]
         public string MaxCapacity { get; set; }
 
+        [DisplayName("Date of Arrival")]
+
         [DataType(DataType.Date)]
         public string DOA { get; set; }
 
