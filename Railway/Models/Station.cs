@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Railway.Models
 {
@@ -10,9 +11,11 @@ namespace Railway.Models
         public int PlatformNo { get; set; }
 
         [DisplayName("Time Of Arrival")]
+        [DataType(DataType.Time)]
         public string TimeOfArrival { get; set; }
 
         [DisplayName("Time Of Departure")]
+        [DataType(DataType.Time)]
         public string TimeOfDeparture{ get; set; }
 
         public int TrainID { get; set; }
