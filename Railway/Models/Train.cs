@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json.Serialization;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Railway.Models
@@ -10,20 +11,10 @@ namespace Railway.Models
         [DisplayName("Train Type")]
         public string Type { get; set; }
 
-        [DisplayName("Number Of Carriages")]
-        public string NumberofCarriages { get; set; }
+        [DisplayName("Train Number")]
+        [Range(1,100)]
+        public int Number { get; set; }
 
-        [DisplayName("Max Speed(km/h)")]
-        public string MaxSpeed { get; set; }
-
-        [DisplayName("Max Capacity(People)")]
-        public string MaxCapacity { get; set; }
-
-        [DisplayName("Date of Arrival")]
-
-        [DataType(DataType.Date)]
-        public string DOA { get; set; }
-
-        public ICollection<Station> Stations { get; set; }
+        public ICollection<Schedule> Schedules { get; set; }
     }
 }

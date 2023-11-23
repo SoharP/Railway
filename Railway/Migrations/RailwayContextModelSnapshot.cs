@@ -286,8 +286,11 @@ namespace Railway.Migrations
 
             modelBuilder.Entity("Railway.Models.Station", b =>
                 {
-                    b.Property<string>("StationID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("StationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StationID"));
 
                     b.Property<int>("PlatformNo")
                         .HasColumnType("int");

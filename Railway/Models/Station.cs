@@ -5,21 +5,21 @@ namespace Railway.Models
 {
     public class Station
     {
-        public string StationID { get; set; }
+        public int StationID { get; set; }
 
-        [DisplayName("Platform Number")]
-        public int PlatformNo { get; set; }
+        [DisplayName("Sation Name")]
+        public string Name { get; set; }
 
-        [DisplayName("Time Of Arrival")]
-        [DataType(DataType.Time)]
-        public string TimeOfArrival { get; set; }
+        [DisplayName("Station Address")]
+        public string Address { get; set; }
 
-        [DisplayName("Time Of Departure")]
-        [DataType(DataType.Time)]
-        public string TimeOfDeparture{ get; set; }
+        [DisplayName("Sation Suburb")]
+        public string Suburb { get; set; }
 
-        public int TrainID { get; set; }
+        public int CityID { get; set; }
 
-        public Train Train { get; set; }
+        public City City { get; set; }
+
+        public ICollection<Schedule> Schedules { get; set; } 
     }
 }
