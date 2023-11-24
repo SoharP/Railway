@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Railway.Models
 {
-    public class Routes
+    public class Routed
     {
-        public int RoutesID { get; set; }
+        public int RoutedID { get; set; }
 
         [DisplayName("Time Of Arrival")]
         [DataType(DataType.Time)]

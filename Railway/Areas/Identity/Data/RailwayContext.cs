@@ -21,9 +21,17 @@ public class RailwayContext : IdentityDbContext<RailwayUser>
         // Add your customizations after calling base.OnModelCreating(builder);
     }
 
-    public DbSet<Railway.Models.Routes> Routes { get; set; } = default!;
+    public DbSet<Railway.Models.Routed> Routed { get; set; } = default!;
 
     public DbSet<Railway.Models.Station> Station { get; set; } = default!;
 
     public DbSet<Railway.Models.Train> Train { get; set; } = default!;
+
+public DbSet<Railway.Models.Schedule> Schedule { get; set; } = default!;
+
+public DbSet<Railway.Models.City> City { get; set; } = default!;
+
+public DbSet<Railway.Models.Platform> Platform { get; set; } = default!;
+
+public DbSet<Railway.Models.Weekdays> Weekdays { get; set; } = default!;
 }

@@ -12,15 +12,15 @@ using Railway.Areas.Identity.Data;
 namespace Railway.Migrations
 {
     [DbContext(typeof(RailwayContext))]
-    [Migration("20231026202928_FirstName and Lastname Identity")]
-    partial class FirstNameandLastnameIdentity
+    [Migration("20231124020225_IntialCreate")]
+    partial class IntialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -235,80 +235,104 @@ namespace Railway.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Railway.Models.Login", b =>
+            modelBuilder.Entity("Railway.Models.City", b =>
                 {
-                    b.Property<string>("LoginID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("DOB")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Email")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone_Number")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Username")
-                        .HasColumnType("int");
-
-                    b.HasKey("LoginID");
-
-                    b.ToTable("Login");
-                });
-
-            modelBuilder.Entity("Railway.Models.Routes", b =>
-                {
-                    b.Property<int>("RoutesID")
+                    b.Property<int>("CityID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoutesID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityID"));
 
-                    b.Property<string>("LineStatus")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.HasKey("CityID");
 
-                    b.Property<string>("TrainLine")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RoutesID");
-
-                    b.ToTable("Routes");
+                    b.ToTable("City");
                 });
 
-            modelBuilder.Entity("Railway.Models.Station", b =>
+            modelBuilder.Entity("Railway.Models.Routed", b =>
                 {
-                    b.Property<string>("StationID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PlatformNo")
+                    b.Property<int>("RoutedID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("TimeOfArrival")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoutedID"));
 
-                    b.Property<string>("TimeOfDeparture")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Time_Of_Arrival")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Time_Of_Departure")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("RoutedID");
+
+                    b.ToTable("Routed");
+                });
+
+            modelBuilder.Entity("Railway.Models.Schedule", b =>
+                {
+                    b.Property<int>("ScheduleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleID"));
+
+                    b.Property<int>("RoutedID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StationID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TainID")
+                        .HasColumnType("int");
 
                     b.Property<int>("TrainID")
                         .HasColumnType("int");
 
-                    b.HasKey("StationID");
+                    b.Property<int>("WeekdaysID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ScheduleID");
+
+                    b.HasIndex("RoutedID");
+
+                    b.HasIndex("StationID");
 
                     b.HasIndex("TrainID");
+
+                    b.HasIndex("WeekdaysID");
+
+                    b.ToTable("Schedule");
+                });
+
+            modelBuilder.Entity("Railway.Models.Station", b =>
+                {
+                    b.Property<int>("StationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StationID"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CityID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Suburb")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StationID");
+
+                    b.HasIndex("CityID");
 
                     b.ToTable("Station");
                 });
@@ -321,21 +345,8 @@ namespace Railway.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainID"));
 
-                    b.Property<string>("DOA")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MaxCapacity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MaxSpeed")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumberofCarriages")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -346,36 +357,21 @@ namespace Railway.Migrations
                     b.ToTable("Train");
                 });
 
-            modelBuilder.Entity("Railway.Models.Updates", b =>
+            modelBuilder.Entity("Railway.Models.Weekdays", b =>
                 {
-                    b.Property<string>("UpdatesID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Delay")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Login_ID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Platform_No")
+                    b.Property<int>("WeekdaysID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Station_Name")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WeekdaysID"));
+
+                    b.Property<string>("Date")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Time_Of_Arrival")
-                        .HasColumnType("int");
+                    b.HasKey("WeekdaysID");
 
-                    b.Property<string>("Time_Of_Departutre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UpdatesID");
-
-                    b.ToTable("Updates");
+                    b.ToTable("Weekdays");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -429,20 +425,71 @@ namespace Railway.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Railway.Models.Station", b =>
+            modelBuilder.Entity("Railway.Models.Schedule", b =>
                 {
+                    b.HasOne("Railway.Models.Routed", "Routed")
+                        .WithMany("Schedules")
+                        .HasForeignKey("RoutedID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Railway.Models.Station", null)
+                        .WithMany("Schedules")
+                        .HasForeignKey("StationID");
+
                     b.HasOne("Railway.Models.Train", "Train")
-                        .WithMany("Stations")
+                        .WithMany("Schedules")
                         .HasForeignKey("TrainID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Railway.Models.Weekdays", "Weekdays")
+                        .WithMany("Schedules")
+                        .HasForeignKey("WeekdaysID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Routed");
+
                     b.Navigation("Train");
+
+                    b.Navigation("Weekdays");
+                });
+
+            modelBuilder.Entity("Railway.Models.Station", b =>
+                {
+                    b.HasOne("Railway.Models.City", "City")
+                        .WithMany("Station")
+                        .HasForeignKey("CityID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("Railway.Models.City", b =>
+                {
+                    b.Navigation("Station");
+                });
+
+            modelBuilder.Entity("Railway.Models.Routed", b =>
+                {
+                    b.Navigation("Schedules");
+                });
+
+            modelBuilder.Entity("Railway.Models.Station", b =>
+                {
+                    b.Navigation("Schedules");
                 });
 
             modelBuilder.Entity("Railway.Models.Train", b =>
                 {
-                    b.Navigation("Stations");
+                    b.Navigation("Schedules");
+                });
+
+            modelBuilder.Entity("Railway.Models.Weekdays", b =>
+                {
+                    b.Navigation("Schedules");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Railway.Migrations
 {
     /// <inheritdoc />
-    public partial class intialcreate : Migration
+    public partial class IntialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,8 @@ namespace Railway.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -51,33 +53,30 @@ namespace Railway.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Login",
+                name: "City",
                 columns: table => new
                 {
-                    LoginID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Username = table.Column<int>(type: "int", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone_Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<int>(type: "int", nullable: false)
+                    CityID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Login", x => x.LoginID);
+                    table.PrimaryKey("PK_City", x => x.CityID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Routes",
+                name: "Routed",
                 columns: table => new
                 {
-                    RoutesID = table.Column<int>(type: "int", nullable: false)
+                    RoutedID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Price = table.Column<int>(type: "int", nullable: false),
-                    TrainLine = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LineStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Time_Of_Arrival = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Time_Of_Departure = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Routes", x => x.RoutesID);
+                    table.PrimaryKey("PK_Routed", x => x.RoutedID);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,9 +86,7 @@ namespace Railway.Migrations
                     TrainID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumberofCarriages = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaxSpeed = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaxCapacity = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Number = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,20 +94,16 @@ namespace Railway.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Updates",
+                name: "Weekdays",
                 columns: table => new
                 {
-                    UpdatesID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Time_Of_Arrival = table.Column<int>(type: "int", nullable: false),
-                    Delay = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Time_Of_Departutre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Platform_No = table.Column<int>(type: "int", nullable: false),
-                    Login_ID = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Station_Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    WeekdaysID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Updates", x => x.UpdatesID);
+                    table.PrimaryKey("PK_Weekdays", x => x.WeekdaysID);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,20 +216,61 @@ namespace Railway.Migrations
                 name: "Station",
                 columns: table => new
                 {
-                    StationID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PlatformNo = table.Column<int>(type: "int", nullable: false),
-                    TimeOfArrival = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TimeOfDeparture = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainID = table.Column<int>(type: "int", nullable: false)
+                    StationID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Suburb = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CityID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Station", x => x.StationID);
                     table.ForeignKey(
-                        name: "FK_Station_Train_TrainID",
+                        name: "FK_Station_City_CityID",
+                        column: x => x.CityID,
+                        principalTable: "City",
+                        principalColumn: "CityID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Schedule",
+                columns: table => new
+                {
+                    ScheduleID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TainID = table.Column<int>(type: "int", nullable: false),
+                    TrainID = table.Column<int>(type: "int", nullable: false),
+                    RoutedID = table.Column<int>(type: "int", nullable: false),
+                    WeekdaysID = table.Column<int>(type: "int", nullable: false),
+                    StationID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Schedule", x => x.ScheduleID);
+                    table.ForeignKey(
+                        name: "FK_Schedule_Routed_RoutedID",
+                        column: x => x.RoutedID,
+                        principalTable: "Routed",
+                        principalColumn: "RoutedID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Schedule_Station_StationID",
+                        column: x => x.StationID,
+                        principalTable: "Station",
+                        principalColumn: "StationID");
+                    table.ForeignKey(
+                        name: "FK_Schedule_Train_TrainID",
                         column: x => x.TrainID,
                         principalTable: "Train",
                         principalColumn: "TrainID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Schedule_Weekdays_WeekdaysID",
+                        column: x => x.WeekdaysID,
+                        principalTable: "Weekdays",
+                        principalColumn: "WeekdaysID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -280,9 +314,29 @@ namespace Railway.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Station_TrainID",
-                table: "Station",
+                name: "IX_Schedule_RoutedID",
+                table: "Schedule",
+                column: "RoutedID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schedule_StationID",
+                table: "Schedule",
+                column: "StationID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schedule_TrainID",
+                table: "Schedule",
                 column: "TrainID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schedule_WeekdaysID",
+                table: "Schedule",
+                column: "WeekdaysID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Station_CityID",
+                table: "Station",
+                column: "CityID");
         }
 
         /// <inheritdoc />
@@ -304,16 +358,7 @@ namespace Railway.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Login");
-
-            migrationBuilder.DropTable(
-                name: "Routes");
-
-            migrationBuilder.DropTable(
-                name: "Station");
-
-            migrationBuilder.DropTable(
-                name: "Updates");
+                name: "Schedule");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -322,7 +367,19 @@ namespace Railway.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Routed");
+
+            migrationBuilder.DropTable(
+                name: "Station");
+
+            migrationBuilder.DropTable(
                 name: "Train");
+
+            migrationBuilder.DropTable(
+                name: "Weekdays");
+
+            migrationBuilder.DropTable(
+                name: "City");
         }
     }
 }

@@ -8,9 +8,9 @@
 
         public Train Train { get; set; }
 
-        public int RouteID { get; set; }
+        public int RoutedID { get; set; }
 
-        public Route Route { get; set; }
+        public Routed Routed { get; set; }
         public int WeekdaysID { get; set; }
 
         public Weekdays Weekdays { get; set; }

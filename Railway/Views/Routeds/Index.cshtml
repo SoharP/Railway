@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Railway.Models.Routed>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Routes</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Time_Of_Arrival)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time_Of_Departure)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time_Of_Arrival)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time_Of_Departure)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RoutedID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RoutedID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RoutedID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
