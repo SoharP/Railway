@@ -22,10 +22,38 @@ namespace Railway.Controllers
 
         // GET: Stations
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            var railwayContext = _context.Station.Include(s => s.City);
-            return View(await railwayContext.ToListAsync());
+
+            ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "nameDesc" : "";
+            ViewData["DateSortParam"] = sortOrder == "date" ? "dateDesc" : "date";
+            ViewData["CurrentFilter"] = searchString;
+
+            var stations = from s in _context.Station select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                stations = stations.Where(s =>  s.Address.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "nameDesc":
+                    stations = stations.OrderByDescending(s => s.Name);
+                    break;
+                case "name":
+                    stations = stations.OrderBy(s => s.Address);
+                    break;
+                case "date_Desc":
+                    stations = stations.OrderByDescending(s => s.Address);
+                    break;
+                default:
+                    stations = stations.OrderBy(s => s.Name);
+                    break;
+            }
+
+            var RailwayDBContext = _context.Station.Include(p => p.Address).Include(p => p.Suburb).Include(p => p.Name);
+            return View(await stations.AsNoTracking().ToListAsync());
         }
 
         // GET: Stations/Details/5
